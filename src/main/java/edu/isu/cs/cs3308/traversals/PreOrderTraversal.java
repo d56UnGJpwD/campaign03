@@ -1,5 +1,9 @@
 package edu.isu.cs.cs3308.traversals;
 
-public class PreOrderTraversal
+import edu.isu.cs.cs3308.structures.Node;
+import edu.isu.cs.cs3308.traversals.commands.TraversalCommand;
+
+public class PreOrderTraversal<E> extends DepthFirstTraversal<E>
 {
+
 }

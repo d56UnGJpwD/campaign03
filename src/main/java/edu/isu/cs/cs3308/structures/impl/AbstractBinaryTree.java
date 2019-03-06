@@ -51,7 +51,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
             this.parent = parent;
         }
 
-        public Node<E> getLeft()
+        public BinaryTreeNode<E> getLeft()
         {
             return left;
         }
@@ -61,7 +61,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
             this.left = left;
         }
 
-        public Node<E> getRight()
+        public BinaryTreeNode<E> getRight()
         {
             return right;
         }
@@ -77,7 +77,309 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
     protected int size;
 
 
+    protected BinaryTreeNode<E> createNode(E element, BinaryTreeNode<E> parent, BinaryTreeNode<E> left, BinaryTreeNode<E> right) throws IllegalArgumentException
+    {
+        if(element == null)
+        {
+            throw new IllegalArgumentException();
+        }
+        return new BinaryTreeNode<>(element, parent, left, right);
+    }
+
+    public Node<E> left(Node<E> parent) throws IllegalArgumentException
+    {
+        validate(parent);
+        return ((BinaryTreeNode<E>) parent).getLeft();
+    }
+
+    public Node<E> right(Node<E> parent) throws IllegalArgumentException
+    {
+        validate(parent);
+        return ((BinaryTreeNode<E>) parent).getRight();
+    }
+
+    public Node<E> sibling(Node<E> parent) throws IllegalArgumentException
+    {
+        validate(parent);
+
+        BinaryTreeNode<E> grandP = (BinaryTreeNode<E>) parent.getParent();
+        if(grandP.getRight() == parent)
+        {
+            return grandP.getLeft();
+        }
+        return grandP.getRight();
+    }
+
+    public Node<E> addLeft(Node<E> parent, E element) throws IllegalArgumentException
+    {
+        validate(parent);
+
+        if(element == null || ((BinaryTreeNode<E>)parent).getLeft() != null)
+        {
+            throw new IllegalArgumentException();
+        }
+        BinaryTreeNode<E> BTNode = createNode(element, (BinaryTreeNode<E>) parent, null, null);
+        BTNode.setElement(element);
+        BTNode.setParent((BinaryTreeNode<E>) parent);
+        ((BinaryTreeNode<E>) parent).setLeft(BTNode);
+        return ((BinaryTreeNode<E>) parent).getLeft();
+    }
+
+    public Node<E> addRight(Node<E> parent, E element) throws IllegalArgumentException
+    {
+        validate(parent);
+
+        if(element == null || ((BinaryTreeNode<E>)parent).getRight() != null)
+        {
+            throw new IllegalArgumentException();
+        }
+        BinaryTreeNode<E> BTNode = createNode(element, (BinaryTreeNode<E>) parent, null, null);
+        BTNode.setElement(element);
+        BTNode.setParent((BinaryTreeNode<E>) parent);
+        ((BinaryTreeNode<E>) parent).setRight(BTNode);
+        return ((BinaryTreeNode<E>) parent).getRight();
+    }
+
+    @Override
+    public Node<E> validate(Node<E> p) throws IllegalArgumentException
+    {
+        if(p == null || p.getClass() != BinaryTreeNode.class)
+        {
+            throw new IllegalArgumentException();
+        }
+
+        Node<E> current = p;
+
+        while(current.getParent() != null)
+        {
+            current = current.getParent();
+        }
+
+        if(current != root)
+        {
+            throw new IllegalArgumentException();
+        }
+
+        return p;
+    }
+
+    public Node<E> setRoot(E item)
+    {
+        if(root != null && root.getElement() == item)
+        {
+            return root;
+        }
+
+        if(item == null)
+        {
+            return null;
+        }
+
+        if(root.getElement() == item)
+        {
+            return root;
+        }
+
+        if(root == null)
+        {
+            root = createNode(item, null, null, null);
+        }
+
+        root = createNode(item, null, null, null);
+
+        return root;
+
+    }
+
+    public Node<E> parent(Node<E> p) throws IllegalArgumentException
+    {
+        validate(p);
+
+        return p.getParent();
+    }
+
+    public Iterable<Node<E>> children(Node<E> parent) throws IllegalArgumentException
+    {
+        //wip
+        validate(parent);
+        return null;
+    }
+
+    public int numChildren(Node<E> parent) throws IllegalArgumentException
+    {
+        validate(parent);
+        size = 0;
+
+        PreOrderTraversal<E> traversal = new PreOrderTraversal<>(this);
+
+        traversal.setCommand(new TraversalCommand()
+        {
+            @Override
+            public void execute(Tree tree, Node node)
+            {
+                size++;
+            }
+        });
+
+        traversal.traverseFrom(parent);
+        return size - 1;
+    }
+
+    @Override
+    public Node<E> root()
+    {
+        return root;
+    }
+
+    @Override
+    public boolean isInternal(Node<E> p) throws IllegalArgumentException
+    {
+        validate(p);
+        //might need to swap
+        if(((BinaryTreeNode<E>) p).getLeft() == null && ((BinaryTreeNode<E>) p).getRight() == null)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isExternal(Node<E> p) throws IllegalArgumentException
+    {
+        validate(p);
+        //might need to swap
+        if(((BinaryTreeNode<E>) p).getLeft() == null && ((BinaryTreeNode<E>) p).getRight() == null)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isRoot(Node<E> p) throws IllegalArgumentException
+    {
+        validate(p);
+        if(p == root)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Node<E> insert(E item, Node<E> p) throws IllegalArgumentException
+    {
+        validate(p);
+
+        if(item == null)
+        {
+            throw new IllegalArgumentException();
+        }
+
+        BinaryTreeNode<E> BTNode = (BinaryTreeNode<E>) p;
+
+        if(BTNode.getLeft() == null)
+        {
+            return addLeft(p, item);
+        }
+        if(BTNode.getRight() == null)
+        {
+            return addRight(p, item);
+        }
+        else
+        {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    @Override
+    public boolean remove(E item, Node<E> p) throws IllegalArgumentException
+    {
+        validate(p);
+        BinaryTreeNode<E> BTNode = (BinaryTreeNode<E>) p;
+
+        if(BTNode.getRight().getElement() == item)
+        {
+            BTNode.setRight(null);
+            return true;
+        }
+        if(BTNode.getLeft().getElement() == item)
+        {
+            BTNode.setLeft(null);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int size()
+    {
+        size = 0;
+        PreOrderTraversal<E> traversal = new PreOrderTraversal<>(this);
+        traversal.setCommand(new TraversalCommand()
+        {
+            @Override
+            public void execute(Tree tree, Node node)
+            {
+                size++;
+            }
+        });
+
+        traversal.traverse();
+        return size;
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        if(root == null)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public E set(Node<E> node, E element) throws IllegalArgumentException
+    {
+        validate(node);
+        if(element == null)
+        {
+            throw new IllegalArgumentException();
+        }
+        node.setElement(element);
+        return null;
+    }
 
 
+    @Override
+    public int depth(Node<E> node) throws IllegalArgumentException
+    {
+        return 0;
+    }
 
+    @Override
+    public int subTreeSize(Node<E> node) throws IllegalArgumentException
+    {
+        validate(node);
+        size = 0;
+        PreOrderTraversal<E> traversal = new PreOrderTraversal<>(this);
+
+        traversal.setCommand(new TraversalCommand()
+        {
+            @Override
+            public void execute(Tree tree, Node node)
+            {
+                size++;
+            }
+        });
+        traversal.traverseFrom(node);
+        return size;
+    }
+
+    @Override
+    public boolean isLastChild(Node<E> node) throws IllegalArgumentException
+    {
+        throw new UnsupportedOperationException();
+    }
 }

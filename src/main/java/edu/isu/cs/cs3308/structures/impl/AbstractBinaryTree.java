@@ -6,6 +6,7 @@ import edu.isu.cs.cs3308.structures.Tree;
 import edu.isu.cs.cs3308.traversals.PreOrderTraversal;
 import edu.isu.cs.cs3308.traversals.commands.TraversalCommand;
 
+
 public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
 {
     public static class BinaryTreeNode<E> implements Node<E>
@@ -46,9 +47,9 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
             return parent;
         }
 
-        public void setParent(BinaryTreeNode<E> parent)
+        public void setParent(BinaryTreeNode<E> p)
         {
-            this.parent = parent;
+            parent = p;
         }
 
         public BinaryTreeNode<E> getLeft()
@@ -86,18 +87,21 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         return new BinaryTreeNode<>(element, parent, left, right);
     }
 
+    @Override
     public Node<E> left(Node<E> parent) throws IllegalArgumentException
     {
         validate(parent);
         return ((BinaryTreeNode<E>) parent).getLeft();
     }
 
+    @Override
     public Node<E> right(Node<E> parent) throws IllegalArgumentException
     {
         validate(parent);
         return ((BinaryTreeNode<E>) parent).getRight();
     }
 
+    @Override
     public Node<E> sibling(Node<E> parent) throws IllegalArgumentException
     {
         validate(parent);
@@ -110,6 +114,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         return grandP.getRight();
     }
 
+    @Override
     public Node<E> addLeft(Node<E> parent, E element) throws IllegalArgumentException
     {
         validate(parent);
@@ -125,6 +130,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         return ((BinaryTreeNode<E>) parent).getLeft();
     }
 
+    @Override
     public Node<E> addRight(Node<E> parent, E element) throws IllegalArgumentException
     {
         validate(parent);
@@ -162,35 +168,22 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
 
         return p;
     }
-
+    @Override
     public Node<E> setRoot(E item)
     {
-        if(root != null && root.getElement() == item)
-        {
-            return root;
-        }
-
         if(item == null)
         {
+            size = 0;
             return null;
         }
 
-        if(root.getElement() == item)
-        {
-            return root;
-        }
-
-        if(root == null)
-        {
-            root = createNode(item, null, null, null);
-        }
-
         root = createNode(item, null, null, null);
+        size++;
 
         return root;
-
     }
 
+    @Override
     public Node<E> parent(Node<E> p) throws IllegalArgumentException
     {
         validate(p);
@@ -198,6 +191,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         return p.getParent();
     }
 
+    @Override
     public Iterable<Node<E>> children(Node<E> parent) throws IllegalArgumentException
     {
         //wip
@@ -205,6 +199,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         return null;
     }
 
+    @Override
     public int numChildren(Node<E> parent) throws IllegalArgumentException
     {
         validate(parent);

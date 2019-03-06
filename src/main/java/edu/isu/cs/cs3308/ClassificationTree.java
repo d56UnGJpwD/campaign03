@@ -57,7 +57,7 @@ public class ClassificationTree {
         BinaryTreeNode<Datum> current = (BinaryTreeNode<Datum>) tree.root();
 
         LinkedList<String> descriptors = new LinkedList<>();
-        String solution = "";
+        String reply;
 
         if(current.getElement().getPrompt().equals("EMPTY"))
         {
@@ -70,9 +70,14 @@ public class ClassificationTree {
 
             System.out.println("Is the animal, " + current.getElement().getPrompt() + "? (Y/N) > ");
             Scanner scanner = new Scanner(System.in);
-            solution = scanner.next().toUpperCase();
+            reply = scanner.next().toUpperCase();
 
-            if(solution.equals("Y"))
+            if(!reply.equals("Y")|| !reply.equals("N"))
+            {
+                System.out.println("Sorry, I do not understand");
+            }
+
+            if(reply.equals("Y"))
             {
                 if(current.getLeft() != null)
                 {
@@ -85,7 +90,7 @@ public class ClassificationTree {
                 }
             }
 
-            if(solution.equals("N"))
+            if(reply.equals("N"))
             {
                 if(current.getRight() != null)
                 {
@@ -97,16 +102,13 @@ public class ClassificationTree {
                     break;
                 }
             }
-            else
-            {
-                System.out.println("Sorry, I do not understand");
-            }
+
         }
-        if(solution.equals("Y"))
+        if(reply.equals("Y"))
         {
             System.out.println("Im the best!");
         }
-        else if(solution.equals("N"))
+        else if(reply.equals("N"))
         {
             addAnimal(current, descriptors);
         }
@@ -135,12 +137,12 @@ public class ClassificationTree {
         Datum nodeD = node.getElement();
         String nodeAnimal = nodeD.getPrompt();
 
-        System.out.println("I dont know any animals that are ");
+        System.out.println("I dont know any animals that are not ");
         for(String desc: descriptors)
         {
             System.out.println(desc + " ");
         }
-        System.out.println("That is not a " + nodeAnimal + "\n");
+
 
         System.out.println("What is the name of the new animal? > ");
         String newAnimal = scanner.next().toUpperCase();

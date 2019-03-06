@@ -234,9 +234,9 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         //might need to swap
         if(((BinaryTreeNode<E>) p).getLeft() == null && ((BinaryTreeNode<E>) p).getRight() == null)
         {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -246,9 +246,9 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         //might need to swap
         if(((BinaryTreeNode<E>) p).getLeft() == null && ((BinaryTreeNode<E>) p).getRight() == null)
         {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override

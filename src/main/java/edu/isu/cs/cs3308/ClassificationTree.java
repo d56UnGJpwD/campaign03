@@ -54,7 +54,6 @@ public class ClassificationTree {
      */
     public void identify()
     {
-        Boolean gameOn = true;
         BinaryTreeNode<Datum> current = (BinaryTreeNode<Datum>) tree.root();
 
         LinkedList<String> descriptors = new LinkedList<>();
@@ -66,7 +65,7 @@ public class ClassificationTree {
             return;
         }
 
-        while(gameOn)
+        while(true)
         {
 
             System.out.println("Is the animal, " + current.getElement().getPrompt() + "? (Y/N) > ");
@@ -107,7 +106,7 @@ public class ClassificationTree {
         {
             System.out.println("Im the best!");
         }
-        if(solution.equals("N"))
+        else if(solution.equals("N"))
         {
             addAnimal(current, descriptors);
         }
@@ -136,12 +135,12 @@ public class ClassificationTree {
         Datum nodeD = node.getElement();
         String nodeAnimal = nodeD.getPrompt();
 
-        System.out.println("I only know ");
+        System.out.println("I dont know any animals that are ");
         for(String desc: descriptors)
         {
             System.out.println(desc + " ");
         }
-        System.out.println("these animals: \n" + nodeAnimal + "\n" );
+        System.out.println("That is not a " + nodeAnimal + "\n");
 
         System.out.println("What is the name of the new animal? > ");
         String newAnimal = scanner.next().toUpperCase();

@@ -14,10 +14,11 @@ public class BreadthFirstTraversal<E> extends AbstractTraversal<E>
 
     public BreadthFirstTraversal(Tree<E> tree)
     {
-        //if null is handled in the super
+        //if null is handled in the AbstractBinaryTree
         super(tree);
     }
 
+    //using java built in arrayList
     public Iterable<Node<E>> traverse()
     {
         if(tree == null || tree.isEmpty())

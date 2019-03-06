@@ -9,6 +9,8 @@ import edu.isu.cs.cs3308.traversals.commands.TraversalCommand;
 
 public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
 {
+    //some of my functions messed up, so they are in a slightly different format than that of the interfaces
+
     public static class BinaryTreeNode<E> implements Node<E>
     {
         private E element;
@@ -16,6 +18,8 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         private BinaryTreeNode<E> left;
         private BinaryTreeNode<E> right;
 
+        //Binary tree node class, similar to regular singularly linked node classes
+        //except they have a parent instead of a next
         public BinaryTreeNode(E element, BinaryTreeNode<E> parent, BinaryTreeNode<E> left, BinaryTreeNode<E> right)
         {
             this.element = element;
@@ -86,21 +90,21 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         }
         return new BinaryTreeNode<>(element, parent, left, right);
     }
-
+    //returns the node child to the left of the provided node
     @Override
     public Node<E> left(Node<E> parent) throws IllegalArgumentException
     {
         validate(parent);
         return ((BinaryTreeNode<E>) parent).getLeft();
     }
-
+    //returns the node child to the right
     @Override
     public Node<E> right(Node<E> parent) throws IllegalArgumentException
     {
         validate(parent);
         return ((BinaryTreeNode<E>) parent).getRight();
     }
-
+    //chekcs if the parent, which I poorly named grandP in my infinite wisdom, returns a sibling of the parent node if it exists
     @Override
     public Node<E> sibling(Node<E> parent) throws IllegalArgumentException
     {
@@ -113,7 +117,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         }
         return grandP.getRight();
     }
-
+    //adds to the left of the root
     @Override
     public Node<E> addLeft(Node<E> parent, E element) throws IllegalArgumentException
     {
@@ -129,10 +133,11 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         ((BinaryTreeNode<E>) parent).setLeft(BTNode);
         return ((BinaryTreeNode<E>) parent).getLeft();
     }
-
+    //adds to the right of the root
     @Override
     public Node<E> addRight(Node<E> parent, E element) throws IllegalArgumentException
     {
+
         validate(parent);
 
         if(element == null || ((BinaryTreeNode<E>)parent).getRight() != null)
@@ -146,6 +151,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         return ((BinaryTreeNode<E>) parent).getRight();
     }
 
+    //validate handles the error checking so it needs to be ran at the start of every function
     @Override
     public Node<E> validate(Node<E> p) throws IllegalArgumentException
     {
@@ -168,7 +174,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
 
         return p;
     }
-
+    //sets the starting node of the tree
     @Override
     public Node<E> setRoot(E item)
     {
@@ -183,7 +189,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
 
         return root;
     }
-
+    //returns the parent node of the provided node
     @Override
     public Node<E> parent(Node<E> p) throws IllegalArgumentException
     {
@@ -191,7 +197,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
 
         return p.getParent();
     }
-
+    //does nothing except return null at this point
     @Override
     public Iterable<Node<E>> children(Node<E> parent) throws IllegalArgumentException
     {
@@ -199,7 +205,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         validate(parent);
         return null;
     }
-
+    //traverses to the parent and gets the count of its children, we dont count the parent
     @Override
     public int numChildren(Node<E> parent) throws IllegalArgumentException
     {
@@ -220,13 +226,13 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         traversal.traverseFrom(parent);
         return size - 1;
     }
-
+    //returns the root
     @Override
     public Node<E> root()
     {
         return root;
     }
-
+    //tests whether the node has children
     @Override
     public boolean isInternal(Node<E> p) throws IllegalArgumentException
     {
@@ -238,7 +244,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         }
         return false;
     }
-
+    //tests whether the node does not have children
     @Override
     public boolean isExternal(Node<E> p) throws IllegalArgumentException
     {
@@ -250,7 +256,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         }
         return false;
     }
-
+    //checks if it is the root
     @Override
     public boolean isRoot(Node<E> p) throws IllegalArgumentException
     {
@@ -262,6 +268,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         return false;
     }
 
+    //inserts the item into as a child of the provided node
     @Override
     public Node<E> insert(E item, Node<E> p) throws IllegalArgumentException
     {
@@ -287,7 +294,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
             throw new IllegalArgumentException();
         }
     }
-
+    //removes the given item from the parent node
     @Override
     public boolean remove(E item, Node<E> p) throws IllegalArgumentException
     {
@@ -310,7 +317,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         }
         return false;
     }
-
+    //returns size of the tree
     @Override
     public int size()
     {
@@ -328,7 +335,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         traversal.traverse();
         return size;
     }
-
+    //returns true if the tree is empty
     @Override
     public boolean isEmpty()
     {
@@ -338,7 +345,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         }
         return false;
     }
-
+    //changes the provided nodes value to the provided element
     @Override
     public E set(Node<E> node, E element) throws IllegalArgumentException
     {
@@ -351,13 +358,13 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         return null;
     }
 
-
+    //just returns 0 at this point
     @Override
     public int depth(Node<E> node) throws IllegalArgumentException
     {
         return 0;
     }
-
+    //gets the size of the subtree where the root is the provided node
     @Override
     public int subTreeSize(Node<E> node) throws IllegalArgumentException
     {
@@ -376,7 +383,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
         traversal.traverseFrom(node);
         return size;
     }
-
+    //unsupported
     @Override
     public boolean isLastChild(Node<E> node) throws IllegalArgumentException
     {

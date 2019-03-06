@@ -168,6 +168,7 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
 
         return p;
     }
+
     @Override
     public Node<E> setRoot(E item)
     {
@@ -291,6 +292,10 @@ public abstract class AbstractBinaryTree<E> implements Tree<E>, BinaryTree<E>
     public boolean remove(E item, Node<E> p) throws IllegalArgumentException
     {
         validate(p);
+        if(p.getParent() == null)
+        {
+            throw new IllegalArgumentException();
+        }
         BinaryTreeNode<E> BTNode = (BinaryTreeNode<E>) p;
 
         if(BTNode.getRight().getElement() == item)

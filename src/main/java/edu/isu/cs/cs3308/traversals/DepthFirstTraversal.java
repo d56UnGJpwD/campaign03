@@ -7,18 +7,22 @@ import edu.isu.cs.cs3308.traversals.commands.TraversalCommand;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class DepthFirstTraversal<E> implements TreeTraversal<E>
+public abstract class DepthFirstTraversal<E> extends AbstractTraversal<E>
 {
+    public DepthFirstTraversal(Tree<E> tree)
+    {
+        super(tree);
+    }
 
-    protected Tree<E> tree;
-    protected TraversalCommand<E> traversalCommand = null;
-
-    public abstract void subtree(Node<E> root, List<Node<E>> list);
+    public Iterable<Node<E>> subtree(Node<E> root, List<Node<E>> list)
+    {
+        return null;
+    }
 
     @Override
     public Iterable<Node<E>> traverse()
     {
-        return traverseFrom(tree.root());
+        return subTreeTraverse(tree.root());
     }
 
     @Override
@@ -27,11 +31,6 @@ public abstract class DepthFirstTraversal<E> implements TreeTraversal<E>
         return subTreeTraverse(node);
     }
 
-    @Override
-    public void setCommand(TraversalCommand cmd)
-    {
-        traversalCommand = cmd;
-    }
 
     public Iterable<Node<E>> subTreeTraverse(Node<E> node)
     {
